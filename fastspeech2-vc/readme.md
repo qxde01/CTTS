@@ -9,4 +9,5 @@
 
 ### 参考
 * [TensorFlowTTS](https://github.com/TensorSpeech/TensorFlowTTS)
+* [PaddleSpeech](https://github.com/PaddlePaddle/PaddleSpeech)
 
