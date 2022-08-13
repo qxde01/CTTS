@@ -56,4 +56,5 @@ dump/
 ### 参考
 * [TensorFlowTTS](https://github.com/TensorSpeech/TensorFlowTTS)
 * [PaddleSpeech](https://github.com/PaddlePaddle/PaddleSpeech)
+* [LightSpeech](https://github.com/nmfisher/TensorFlowTTS)
 
