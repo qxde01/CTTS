@@ -8,6 +8,8 @@ Chinese text to speech ,中文语音合成
 frame_period =1000*hop_size/sample_rate   
 frame_shift_in_micro_sec=int(frame_period*10000)
 ```
+## fastspeech2
+ 基于fastspech2的音色克隆。包括tacotron2、fastspeech2、hifi-gan训练，整个过程基于[TensorFlowTTS](https://github.com/TensorSpeech/TensorFlowTTS)。
 
 ### 参考
 * [merlin](https://github.com/CSTR-Edinburgh/merlin)
