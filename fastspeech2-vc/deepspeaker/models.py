@@ -99,19 +99,11 @@ def ResNetV1(input_shape=(None,80),classes=6,dropout_rate=0.5):
     x = keras.layers.Dense(512, activation=None, name='fc1')(x)
     x = keras.layers.ReLU(max_value=20.,name='fc1_relu')(x)
     spk_emb = keras.layers.Dense(256, activation=None, name='spk_emb')(x)
-    #spk_emb = keras.layers.ReLU(max_value=20., name='spk_emb')(x)
-
-    output_amsoftmax = keras.layers.Lambda(lambda x: keras.backend.l2_normalize(x, 1))(spk_emb)
-    output_amsoftmax = keras.layers.Dense(classes, activation=None, name='classify',kernel_constraint=keras.constraints.unit_norm())(output_amsoftmax)
-
-    output_softmax = keras.layers.Dense(classes, activation='softmax', name='softmax')(spk_emb)
-
-    # Create model.
-    #model = keras.models.Model(img_input, output, name='SpeakerModel')
+    x = keras.layers.Dropout(dropout_rate)(spk_emb)
+    output_amsoftmax = keras.layers.Dense(classes, activation=None, name='classify', kernel_constraint=keras.constraints.unit_norm())(x)
+    output_softmax = keras.layers.Softmax(name='classify_sofmax')(output_amsoftmax)
     speark_emb_model=keras.models.Model(img_input, spk_emb, name='SpeakerEmb')
     model_amsoftmax = keras.Model(inputs=img_input, outputs=output_amsoftmax, name='ResNetV1')
-    # inputs={"anchor_input":anchor_input, "positive_input":positive_input, "negative_input":negative_input}
-    # outputs={"triplet":merged_vector,"softmax":softmax}
     model_softmax = keras.Model(inputs=img_input, outputs=output_softmax, name='ResNetV1')
 
     return model_softmax,model_amsoftmax,speark_emb_model
@@ -147,11 +139,9 @@ def ResNetV2(input_shape=(None,80),classes=10):
     speark_emb_model=ResNet50V2(include_top=False,input_shape=input_shape, classes=classes,class_type='softmax')
     x = keras.layers.Dropout(0.5)(speark_emb_model.outputs[0])
 
-    output_amsoftmax = keras.layers.Lambda(lambda x: keras.backend.l2_normalize(x, 1))(x)
-    output_amsoftmax = keras.layers.Dense(classes, activation=None, name='amsoftmax',
-                                kernel_constraint=keras.constraints.unit_norm())(output_amsoftmax)
-
-    output_softmax = keras.layers.Dense(classes, activation='softmax', name='softmax')(x)
+    #output_amsoftmax = keras.layers.Lambda(lambda x: keras.backend.l2_normalize(x, 1))(x)
+    output_amsoftmax=keras.layers.Dense(classes, activation=None, name='classify', kernel_constraint=keras.constraints.unit_norm())(x)
+    output_softmax = keras.layers.Softmax(name='classify_sofmax')(output_amsoftmax)
 
     model_amsoftmax = keras.Model(inputs=speark_emb_model.inputs, outputs=output_amsoftmax,name='ResNet50V2')
     #inputs={"anchor_input":anchor_input, "positive_input":positive_input, "negative_input":negative_input}
@@ -159,6 +149,6 @@ def ResNetV2(input_shape=(None,80),classes=10):
     model_softmax = keras.Model(inputs=speark_emb_model.inputs, outputs=output_softmax,name='ResNet50V2')
     return model_softmax,model_amsoftmax,speark_emb_model
 if __name__ == '__main__':
-    model,_,_=ResNetV1(input_shape=(None,80),classes=6,dropout_rate=0.5)
-    model.summary()
+    model_softmax,model_amsoftmax,speark_emb_model=ResNetV2(input_shape=(None,80),classes=6)
+    speark_emb_model.summary()
 
