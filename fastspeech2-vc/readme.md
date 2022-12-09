@@ -57,4 +57,6 @@ dump/
 * [TensorFlowTTS](https://github.com/TensorSpeech/TensorFlowTTS)
 * [PaddleSpeech](https://github.com/PaddlePaddle/PaddleSpeech)
 * [LightSpeech](https://github.com/nmfisher/TensorFlowTTS)
+* [RepVGG](https://github.com/hoangthang1607/RepVGG-Tensorflow-2/blob/main/repvgg.py)
+* [ECAPA_TDNN](https://github.com/wenet-e2e/wespeaker)
 
